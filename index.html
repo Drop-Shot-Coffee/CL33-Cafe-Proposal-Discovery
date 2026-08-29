@@ -1,0 +1,763 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>CenterLine 33 × Drop Shot Coffee — Partnership Discovery</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,600;12..96,700;12..96,800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --ink:#0C2722; --ink-2:#11362E; --ink-3:#0A211C;
+    --court:#1C6B57; --court-bright:#2E977C;
+    --crema:#E3B05A; --crema-deep:#C2872F;
+    --paper:#F6F2EA; --paper-2:#FCF9F3;
+    --line:#E6DECC; --line-d:rgba(255,255,255,.16);
+    --text:#15322B; --muted:#5E6B63; --muted-d:#9DB3AB;
+    --ball:#D7DF4B; --alarm:#B8463C;
+    --maxw:1080px; --r:14px;
+  }
+  *{box-sizing:border-box;}
+  [hidden]{display:none !important;}
+  html{scroll-behavior:smooth;}
+  body{margin:0;font-family:"Inter",system-ui,sans-serif;background:var(--paper);color:var(--text);line-height:1.6;-webkit-font-smoothing:antialiased;}
+  h1,h2,h3,h4{font-family:"Bricolage Grotesque","Inter",sans-serif;font-weight:700;line-height:1.06;margin:0;letter-spacing:-.02em;}
+  p{margin:0;}
+  .mono{font-family:"JetBrains Mono",monospace;font-variant-numeric:tabular-nums;}
+
+  /* NAV */
+  .nav{position:sticky;top:0;z-index:60;background:var(--ink-3);border-bottom:1px solid var(--line-d);}
+  .nav-inner{max-width:var(--maxw);margin:0 auto;padding:0 22px;min-height:62px;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;}
+  .brand{display:flex;align-items:center;gap:11px;color:#fff;text-decoration:none;}
+  .brand .court-mark{width:26px;height:20px;flex:0 0 auto;}
+  .brand b{font-family:"Bricolage Grotesque";font-weight:700;font-size:15px;}
+  .brand span span{color:var(--muted-d);font-size:11px;font-weight:500;letter-spacing:.16em;text-transform:uppercase;display:block;margin-top:-2px;}
+  .nav-tools{display:flex;align-items:center;gap:9px;flex-wrap:wrap;}
+  .conn{display:flex;align-items:center;gap:7px;font-family:"JetBrains Mono";font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted-d);}
+  .pulse{width:8px;height:8px;border-radius:50%;background:var(--ball);}
+  .pulse.off{background:var(--muted);}
+  .status-line{font-family:"JetBrains Mono";font-size:10.5px;color:var(--muted-d);min-width:120px;text-align:right;}
+  .status-line.saved{color:var(--ball);} .status-line.dirty{color:var(--crema);} .status-line.err{color:#F08070;}
+
+  .btn{appearance:none;font-family:"Inter";font-size:12px;font-weight:600;letter-spacing:.03em;border-radius:9px;padding:8px 14px;cursor:pointer;transition:background .16s,border-color .16s,color .16s;}
+  .btn-line{background:transparent;border:1px solid var(--line-d);color:var(--muted-d);}
+  .btn-line:hover{color:#fff;border-color:var(--crema);}
+  .btn-gold{background:var(--crema);border:1px solid var(--crema);color:#3a2a08;}
+  .btn-gold:hover{background:var(--crema-deep);border-color:var(--crema-deep);color:#fff;}
+  .btn-gold:disabled{opacity:.5;cursor:default;}
+  .btn-quiet{background:#fff;border:1px solid var(--line);color:var(--text);}
+  .btn-quiet:hover{border-color:var(--court-bright);color:var(--court);}
+  .btn:focus-visible,.pill:focus-visible,.rt-body:focus-visible{outline:2px solid var(--crema);outline-offset:2px;}
+
+  /* SCOREBOARD */
+  .scoreboard{background:radial-gradient(120% 90% at 85% -10%,rgba(46,151,124,.20),transparent 60%),linear-gradient(180deg,var(--ink) 0%,var(--ink-3) 100%);color:#fff;position:relative;overflow:hidden;border-bottom:1px solid var(--line-d);}
+  .scoreboard::before{content:"";position:absolute;inset:0;pointer-events:none;opacity:.5;background-image:linear-gradient(var(--line-d) 1px,transparent 1px),linear-gradient(90deg,var(--line-d) 1px,transparent 1px);background-size:64px 64px;-webkit-mask-image:radial-gradient(120% 100% at 80% 0%,#000,transparent 75%);mask-image:radial-gradient(120% 100% at 80% 0%,#000,transparent 75%);}
+  .sb-inner{position:relative;max-width:var(--maxw);margin:0 auto;padding:24px 22px 26px;}
+  .eyebrow{font-size:11.5px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:var(--crema-deep);}
+  .eyebrow.on-dark{color:var(--crema);}
+  .sb-grid{display:grid;grid-template-columns:repeat(4,1fr);border-top:1px solid var(--line-d);margin-top:14px;}
+  .sb-cell{padding:15px 18px 4px;border-right:1px solid var(--line-d);}
+  .sb-cell:last-child{border-right:none;}
+  .sb-lab{font-size:10px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--muted-d);}
+  .sb-val{font-family:"JetBrains Mono";font-weight:700;font-size:26px;color:#fff;margin-top:6px;letter-spacing:-.02em;}
+  .sb-val.gold{color:var(--crema);} .sb-val.good{color:var(--ball);} .sb-val.bad{color:#F08070;}
+  .sb-note{font-size:11.5px;color:var(--muted-d);margin-top:3px;}
+  .bar{height:6px;border-radius:3px;background:rgba(255,255,255,.14);margin-top:16px;overflow:hidden;}
+  .bar span{display:block;height:100%;background:var(--crema);transition:width .3s;}
+
+  /* PER-FIELD ADVANCED TOOLBAR */
+  .rt-bar{display:flex;align-items:center;gap:1px;flex-wrap:wrap;padding:6px 8px;
+    background:var(--paper);border-bottom:1px solid var(--line);border-radius:10px 10px 0 0;}
+  .rt-bar button{display:inline-flex;align-items:center;justify-content:center;
+    background:none;border:1px solid transparent;color:var(--muted);
+    font-family:"Inter";font-size:12px;font-weight:700;line-height:1;
+    height:26px;min-width:26px;padding:0 6px;border-radius:6px;cursor:pointer;transition:all .12s;}
+  .rt-bar button:hover{background:#fff;color:var(--court);border-color:var(--line);}
+  .rt-bar button[aria-pressed="true"]{background:var(--court);border-color:var(--court);color:#fff;}
+  .rt-bar button svg{width:15px;height:15px;fill:none;stroke:currentColor;stroke-width:1.7;
+    stroke-linecap:round;stroke-linejoin:round;}
+  .rt-bar .gap{width:1px;height:18px;background:var(--line);margin:0 5px;flex:0 0 auto;}
+  .rt-bar select{height:26px;font-family:"Inter";font-size:11.5px;font-weight:600;color:var(--muted);
+    background:#fff;border:1px solid var(--line);border-radius:6px;padding:0 4px;cursor:pointer;max-width:104px;}
+  .rt-bar select:hover{border-color:var(--court-bright);color:var(--court);}
+  .rt-bar .swatch{position:relative;width:26px;height:26px;border-radius:6px;overflow:hidden;flex:0 0 auto;}
+  .rt-bar .swatch input{position:absolute;inset:-4px;width:calc(100% + 8px);height:calc(100% + 8px);
+    padding:0;border:0;background:none;cursor:pointer;}
+  .rt-bar .swatch span{position:absolute;left:5px;right:5px;bottom:4px;height:3px;border-radius:2px;pointer-events:none;}
+  .rt-bar .swatch b{position:absolute;top:2px;left:0;right:0;text-align:center;font-size:11px;
+    font-weight:700;color:var(--muted);pointer-events:none;line-height:1;}
+  .rt-wrap.focused .rt-bar{background:#fff;}
+
+  .wrap{max-width:var(--maxw);margin:0 auto;padding:0 22px;}
+  .section{padding:40px 0 10px;}
+  .kicker-h2{font-size:clamp(22px,3.2vw,30px);max-width:26ch;margin:12px 0 10px;}
+  .lead{font-size:15px;color:var(--muted);max-width:76ch;}
+  .lead strong{color:var(--text);font-weight:600;}
+
+  .callout{background:#fff;border:1px solid var(--line);border-left:3px solid var(--crema);border-radius:12px;padding:15px 18px;font-size:13.5px;color:var(--muted);margin-top:18px;}
+  .callout b{color:var(--crema-deep);}
+
+  /* SECTION BLOCK */
+  .sow{background:var(--paper-2);border:1px solid var(--line);border-radius:18px;overflow:hidden;margin-top:22px;}
+  .sow-head{padding:18px 22px;border-bottom:1px solid var(--line);background:#fff;display:flex;gap:14px;align-items:flex-start;}
+  .sow-head .ill{width:40px;height:40px;flex:0 0 auto;}
+  .sow-head .tag{font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--crema-deep);}
+  .sow-head h3{font-size:19px;margin:3px 0 5px;}
+  .sow-head p{font-size:12.5px;color:var(--muted);max-width:80ch;}
+  .sow-head .cnt{margin-left:auto;font-family:"JetBrains Mono";font-size:11px;color:var(--court);background:rgba(28,107,87,.09);padding:5px 11px;border-radius:20px;white-space:nowrap;}
+  .sow-body{padding:6px 22px 20px;}
+
+  /* QUESTION */
+  .q{border-bottom:1px dashed var(--line);padding:20px 0;}
+  .q:last-child{border-bottom:none;}
+  .q-head{display:flex;gap:12px;align-items:flex-start;flex-wrap:wrap;}
+  .q-n{font-family:"JetBrains Mono";font-size:11px;font-weight:700;color:var(--crema-deep);padding-top:3px;flex:0 0 auto;}
+  .q-main{flex:1;min-width:240px;}
+  .q-t{font-family:"Bricolage Grotesque";font-size:16px;font-weight:700;line-height:1.3;}
+  .q-why{font-size:12.5px;color:var(--muted);margin-top:5px;max-width:78ch;}
+  .q-why em{color:var(--court);font-style:normal;font-weight:600;}
+  .badge{font-size:9.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:3px 9px;border-radius:20px;white-space:nowrap;align-self:flex-start;margin-top:2px;}
+  .badge.ri{background:#FBECEA;color:#8a2f27;border:1px solid #E9B7B1;}
+  .badge.seq{background:#F3E6C7;color:#8a611a;border:1px solid var(--crema);}
+  .badge.aux{background:#EDE9E0;color:#6b6357;border:1px solid var(--line);}
+
+  .pills{display:flex;gap:5px;margin:12px 0 9px;flex-wrap:wrap;}
+  .pill{appearance:none;border:1px solid var(--line);background:#fff;color:var(--muted);font-family:"Inter";font-size:11px;font-weight:600;padding:5px 12px;border-radius:20px;cursor:pointer;transition:all .15s;}
+  .pill:hover{border-color:var(--court-bright);color:var(--court);}
+  .pill[aria-pressed="true"]{background:var(--court);border-color:var(--court);color:#fff;}
+  .pill.ask[aria-pressed="true"]{background:var(--crema-deep);border-color:var(--crema-deep);color:#fff;}
+  .pill.na[aria-pressed="true"]{background:var(--muted);border-color:var(--muted);color:#fff;}
+
+  .rt-wrap{border:1.5px solid var(--line);border-radius:12px;background:#fff;transition:border-color .15s,box-shadow .15s;}
+  .rt-wrap.focused{border-color:var(--court);box-shadow:0 0 0 3px rgba(28,107,87,.13);}
+  .rt-body{min-height:96px;padding:13px 15px;font-size:14px;line-height:1.65;outline:none;}
+  .rt-body:empty::before{content:attr(data-ph);color:var(--muted);font-style:italic;}
+  .rt-body h3{font-family:"Bricolage Grotesque";font-size:16px;margin:10px 0 4px;}
+  .rt-body ul,.rt-body ol{margin:6px 0 6px 22px;}
+  .rt-body blockquote{border-left:3px solid var(--line);margin:8px 0;padding-left:12px;color:var(--muted);}
+  .rt-foot{display:flex;align-items:center;padding:8px 13px;border-top:1px solid var(--line);gap:12px;}
+  .rt-count{font-family:"JetBrains Mono";font-size:10px;color:var(--muted);margin-left:auto;}
+  .rt-meta{font-family:"JetBrains Mono";font-size:10px;color:var(--muted);}
+  .rt-meta.dirty{color:var(--crema-deep);} .rt-meta.saved{color:var(--court);} .rt-meta.err{color:var(--alarm);}
+
+  .banner{display:none;border-radius:12px;padding:13px 17px;font-size:13px;margin-top:16px;}
+  .banner.show{display:block;}
+  .banner.alarm{background:#FBECEA;border:1px solid #E9B7B1;border-left:3px solid var(--alarm);color:#8a2f27;}
+
+  .foot{background:var(--ink-3);color:var(--muted-d);padding:26px 0;font-size:12.5px;margin-top:44px;}
+  .foot .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;align-items:center;}
+  .foot b{color:#fff;font-family:"Bricolage Grotesque";}
+  .boot{display:flex;justify-content:center;align-items:center;min-height:100vh;font-family:"JetBrains Mono";font-size:12px;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);}
+
+  @media (max-width:820px){
+    .sb-grid{grid-template-columns:repeat(2,1fr);}
+    .sb-cell:nth-child(2){border-right:none;}
+    .nav-inner{padding:10px 16px;}
+    .wrap,.tb-inner{padding-left:16px;padding-right:16px;}
+    .toolbar{top:auto;}
+    .tb-target{display:none;}
+  }
+  @media (prefers-reduced-motion:reduce){*{transition:none !important;}}
+</style>
+</head>
+<body>
+
+<div class="boot" id="boot">Opening the discovery form…</div>
+
+<div id="app" hidden>
+
+<svg style="display:none" aria-hidden="true">
+  <symbol id="ic-cup" viewBox="0 0 64 64">
+    <path d="M30 6 C26 11 34 13 30 18" fill="none" stroke="#1C6B57" stroke-width="2.2" stroke-linecap="round"/>
+    <path d="M38 6 C34 11 42 13 38 18" fill="none" stroke="#1C6B57" stroke-width="2.2" stroke-linecap="round"/>
+    <rect x="19" y="20" width="26" height="8" rx="3" fill="#E3B05A" stroke="#fff" stroke-width="2"/>
+    <path d="M22 28 H42 L39 56 H25 Z" fill="#fff" stroke="#1C6B57" stroke-width="2"/>
+    <rect x="24" y="37" width="16" height="9" fill="#2E977C"/>
+  </symbol>
+  <symbol id="ic-court" viewBox="0 0 64 64">
+    <rect x="7" y="13" width="50" height="38" rx="2" fill="#1C6B57" stroke="#fff" stroke-width="2"/>
+    <line x1="32" y1="13" x2="32" y2="51" stroke="#fff" stroke-width="1.6"/>
+    <line x1="7" y1="22" x2="57" y2="22" stroke="#fff" stroke-width="1.4"/>
+    <line x1="7" y1="42" x2="57" y2="42" stroke="#fff" stroke-width="1.4"/>
+    <line x1="32" y1="9" x2="32" y2="55" stroke="#E3B05A" stroke-width="2" stroke-dasharray="3 3"/>
+  </symbol>
+  <symbol id="ic-shield" viewBox="0 0 64 64">
+    <path d="M32 5 L54 13 V31 C54 44 44 53 32 59 C20 53 10 44 10 31 V13 Z" fill="#fff" stroke="#1C6B57" stroke-width="2.4" stroke-linejoin="round"/>
+    <path d="M32 11 L48 17 V31 C48 41 41 48 32 52 Z" fill="#E3B05A"/>
+    <path d="M23 32 l6 6 12-13" fill="none" stroke="#0A211C" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+  </symbol>
+  <symbol id="ic-people" viewBox="0 0 64 64">
+    <circle cx="42" cy="20" r="7" fill="#2E977C" stroke="#fff" stroke-width="2"/>
+    <path d="M30 52 V44 C30 36 36 32 42 32 C48 32 54 36 54 44 V52 Z" fill="#2E977C" stroke="#fff" stroke-width="2"/>
+    <circle cx="22" cy="22" r="8" fill="#E3B05A" stroke="#fff" stroke-width="2"/>
+    <path d="M8 54 V45 C8 36 15 31 22 31 C29 31 36 36 36 45 V54 Z" fill="#E3B05A" stroke="#fff" stroke-width="2"/>
+  </symbol>
+  <symbol id="ic-scale" viewBox="0 0 64 64">
+    <line x1="32" y1="10" x2="32" y2="52" stroke="#1C6B57" stroke-width="3" stroke-linecap="round"/>
+    <line x1="12" y1="18" x2="52" y2="18" stroke="#1C6B57" stroke-width="3" stroke-linecap="round"/>
+    <circle cx="32" cy="10" r="3.6" fill="#E3B05A" stroke="#fff" stroke-width="1.6"/>
+    <path d="M4 32 L12 18 L20 32 Z" fill="#2E977C" stroke="#fff" stroke-width="1.8" stroke-linejoin="round"/>
+    <path d="M44 32 L52 18 L60 32 Z" fill="#E3B05A" stroke="#fff" stroke-width="1.8" stroke-linejoin="round"/>
+    <rect x="22" y="52" width="20" height="5" rx="2.5" fill="#1C6B57"/>
+  </symbol>
+  <symbol id="ic-trophy" viewBox="0 0 64 64">
+    <path d="M20 9 H44 V21 C44 32 38 38 32 38 C26 38 20 32 20 21 Z" fill="#E3B05A" stroke="#fff" stroke-width="2"/>
+    <path d="M20 12 C11 12 11 27 23 28" fill="none" stroke="#E3B05A" stroke-width="3.4"/>
+    <path d="M44 12 C53 12 53 27 41 28" fill="none" stroke="#E3B05A" stroke-width="3.4"/>
+    <rect x="28" y="38" width="8" height="9" fill="#C2872F"/>
+    <rect x="21" y="47" width="22" height="7" rx="2" fill="#E3B05A" stroke="#fff" stroke-width="2"/>
+  </symbol>
+  <symbol id="t-ul" viewBox="0 0 16 16"><circle cx="2.5" cy="4" r="1.2" fill="currentColor" stroke="none"/><circle cx="2.5" cy="8" r="1.2" fill="currentColor" stroke="none"/><circle cx="2.5" cy="12" r="1.2" fill="currentColor" stroke="none"/><path d="M6 4h8M6 8h8M6 12h8"/></symbol>
+  <symbol id="t-ol" viewBox="0 0 16 16"><path d="M6 4h8M6 8h8M6 12h8"/><text x="1" y="5.6" font-size="5" font-family="JetBrains Mono" fill="currentColor" stroke="none">1</text><text x="1" y="9.6" font-size="5" font-family="JetBrains Mono" fill="currentColor" stroke="none">2</text><text x="1" y="13.6" font-size="5" font-family="JetBrains Mono" fill="currentColor" stroke="none">3</text></symbol>
+  <symbol id="t-indent" viewBox="0 0 16 16"><path d="M7 4h8M7 8h8M7 12h8M2 3h1M2 13h1"/><path d="M1.5 6l2.5 2-2.5 2z" fill="currentColor" stroke="none"/></symbol>
+  <symbol id="t-outdent" viewBox="0 0 16 16"><path d="M7 4h8M7 8h8M7 12h8M4 3h1M4 13h1"/><path d="M4.5 6L2 8l2.5 2z" fill="currentColor" stroke="none"/></symbol>
+  <symbol id="t-alL" viewBox="0 0 16 16"><path d="M2 3.5h12M2 7h7M2 10.5h12M2 14h7"/></symbol>
+  <symbol id="t-alC" viewBox="0 0 16 16"><path d="M2 3.5h12M4.5 7h7M2 10.5h12M4.5 14h7"/></symbol>
+  <symbol id="t-alR" viewBox="0 0 16 16"><path d="M2 3.5h12M7 7h7M2 10.5h12M7 14h7"/></symbol>
+  <symbol id="t-alJ" viewBox="0 0 16 16"><path d="M2 3.5h12M2 7h12M2 10.5h12M2 14h12"/></symbol>
+  <symbol id="t-link" viewBox="0 0 16 16"><path d="M6.6 9.4a3 3 0 004.3 0l2.4-2.4a3 3 0 10-4.3-4.3L7.9 3.8"/><path d="M9.4 6.6a3 3 0 00-4.3 0L2.7 9a3 3 0 104.3 4.3l1.1-1.1"/></symbol>
+  <symbol id="t-unlink" viewBox="0 0 16 16"><path d="M6.6 9.4a3 3 0 004.3 0l1.2-1.2M9.4 6.6a3 3 0 00-4.3 0L3.9 7.8"/><path d="M2 2l12 12"/></symbol>
+  <symbol id="t-hr" viewBox="0 0 16 16"><path d="M2 8h12"/><path d="M3 3.5h10M3 12.5h10" opacity=".35"/></symbol>
+  <symbol id="t-undo" viewBox="0 0 16 16"><path d="M3 7h7a3.5 3.5 0 010 7H6"/><path d="M5.5 4L2.5 7l3 3"/></symbol>
+  <symbol id="t-redo" viewBox="0 0 16 16"><path d="M13 7H6a3.5 3.5 0 000 7h4"/><path d="M10.5 4l3 3-3 3"/></symbol>
+  <symbol id="t-clear" viewBox="0 0 16 16"><path d="M5 13h8"/><path d="M9.5 3L5 13"/><path d="M6 3h6"/><path d="M2 2l12 12" opacity=".55"/></symbol>
+  <symbol id="t-paste" viewBox="0 0 16 16"><rect x="3" y="3" width="10" height="12" rx="1.5"/><path d="M6 3V2h4v1"/><path d="M5.5 7.5h5M5.5 10.5h3"/></symbol>
+  <symbol id="ic-flask" viewBox="0 0 64 64">
+    <path d="M26 8 H38 V26 L50 50 C51.5 53.5 49 57 45 57 H19 C15 57 12.5 53.5 14 50 L26 26 Z" fill="#fff" stroke="#1C6B57" stroke-width="2.4" stroke-linejoin="round"/>
+    <path d="M20 42 H44 L47.5 50 C48.6 52.4 47 55 44.4 55 H19.6 C17 55 15.4 52.4 16.5 50 Z" fill="#2E977C"/>
+    <rect x="23" y="4" width="18" height="6" rx="3" fill="#E3B05A" stroke="#fff" stroke-width="1.6"/>
+  </symbol>
+</svg>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a class="brand" href="#" onclick="return false;">
+      <svg class="court-mark" viewBox="0 0 26 20" fill="none" aria-hidden="true">
+        <rect x="1" y="1" width="24" height="18" rx="2" stroke="#E3B05A" stroke-width="1.4"/>
+        <line x1="13" y1="1" x2="13" y2="19" stroke="#E3B05A" stroke-width="1.1"/>
+        <line x1="1" y1="6.5" x2="25" y2="6.5" stroke="#2E977C" stroke-width="1.1"/>
+        <line x1="1" y1="13.5" x2="25" y2="13.5" stroke="#2E977C" stroke-width="1.1"/>
+      </svg>
+      <span style="line-height:1.05"><b>DROP SHOT &#215; CENTERLINE 33</b><span>Partnership Discovery</span></span>
+    </a>
+    <div class="nav-tools">
+      <span class="conn"><span class="pulse off" id="connDot"></span><span id="whoami">connecting</span></span>
+      <span class="status-line" id="status">&nbsp;</span>
+      <button class="btn btn-line" id="btnRetry" type="button">Retry</button>
+      <button class="btn btn-gold" id="btnSave" type="button">Save all</button>
+    </div>
+  </div>
+</nav>
+
+<div class="scoreboard">
+  <div class="sb-inner">
+    <span class="eyebrow on-dark">The answers that complete the rate proposal</span>
+    <div class="sb-grid" id="sb"></div>
+    <div class="bar"><span id="progBar" style="width:0%"></span></div>
+  </div>
+</div>
+
+<div class="wrap">
+  <div class="banner alarm" id="storeBanner"></div>
+</div>
+
+<div class="wrap section">
+  <span class="eyebrow">How this works</span>
+  <h2 class="kicker-h2">Nineteen short answers, from whoever holds each file.</h2>
+  <p class="lead">This form pairs with Appendix A of the structural proposal. Each answer sizes a specific part of the deal &#8212; the works, the term, the rate, the opening date &#8212; and <strong>none of it commits CenterLine to anything</strong>. Answer in pieces, in any order, no single sitting needed: everything saves on its own as you type, and you can close the page and come back whenever suits.</p>
+  <div class="callout">
+    <b><span id="blkCount">&#8212;</span> of these are rate inputs.</b> They are the answers the revenue-share numbers are computed from &#8212; Drop Shot returns the completed rate proposal within ten days of receiving them. The rest sequence the works and the paperwork, and can follow at their own pace.
+  </div>
+  <div class="callout" style="border-left-color:var(--court)">
+    <b>Using the form.</b> Type straight into a field, or mark it <strong>Not applicable</strong> or <strong>We&#8217;ll follow up</strong> if the answer needs digging out &#8212; a marked field is a real answer and we will simply pick it up together. Every field carries its own formatting toolbar &#8212; styles, lists, alignment, colour, links, undo. <strong>Tab indents, Shift+Tab outdents</strong>; press <strong>Escape</strong> to step out of a field. Pasted text arrives clean. Everything autosaves about a second after you stop typing, and the Save all button is there for reassurance.
+  </div>
+  <div class="callout" style="border-left-color:var(--crema)">
+    <b>Questions?</b> Anything unclear, write it into the nearest field or send it straight to Tarek at <strong>hello@dropshotcoffee.us</strong> &#8212; the form is a convenience, never a gate.
+  </div>
+</div>
+
+<div id="sections"></div>
+
+<div class="foot">
+  <div class="wrap">
+    <span><b>Drop Shot Coffee</b> &#215; CenterLine 33 — partnership discovery</span>
+    <span class="mono" id="stamp">—</span>
+    <span>Saved live · <span class="mono">answers reach Drop Shot as you type</span></span>
+  </div>
+</div>
+
+</div><!-- /#app -->
+
+<script>
+(function(){
+  'use strict';
+
+  var SB_URL='https://iwufnpzlwxzzedwcrjrk.supabase.co/rest/v1';
+  var SB_KEY='sb_publishable_suHnnWiR60uSP_bKx9V_Yg_GJoCzddq';
+  var storeOK=false, lastError='';
+  var FKEY=(function(){try{var m=/[?&#]k=([A-Za-z0-9_-]+)/.exec(location.href);return m?m[1]:'';}catch(e){return '';}})();
+
+  var SECTIONS=[
+  {k:'title', icon:'ic-shield', tag:'Section A1', title:'Premises: title and occupancy',
+   note:'These answers size the term Drop Shot can be offered and tell both sides whose consent, if anyone\u2019s, the works need. One read of the relevant file usually answers the whole section.',
+   qs:[
+    {k:'a11_entity', p:'seq', pl:'sequencing', t:'The legal name of the entity that operates CenterLine 33, and the names of its owners.',
+     why:'So the agreement is drawn between the right parties, and so the proposal reaches everyone who should see it.',
+     ph:'Entity name and the owners\u2026'},
+    {k:'a12_own_lease', p:'ri', pl:'rate input', t:'Does that entity own the building, or lease it?',
+     why:'Either answer is fine \u2014 the follow-ons differ, and if leased, the remaining term helps size the partnership term.',
+     ph:'Own or lease\u2026'},
+    {k:'a13_owned', p:'seq', pl:'sequencing', t:'If owned: does any lender consent apply to alterations or to granting concession rights, and do any recorded restrictions touch food service?',
+     why:'Usually a quick confirmation from whoever handles the mortgage file. Skip if the building is leased.',
+     ph:'Lender consents, recorded restrictions, or none\u2026'},
+    {k:'a14_leased', p:'ri', pl:'rate input', t:'If leased: the landlord, the remaining term and renewals, and how the lease treats a caf\u00e9 operated by a partner.',
+     why:'The useful items in one pass: landlord identity; remaining term, renewal options and notice dates; whether the permitted use covers food and beverage operated by a third party; the consent standard for alterations; how subletting, licensing or concessions are treated; whether any rent is calculated on premises receipts, and how caf\u00e9 sales would be treated; whether any other occupant holds an exclusive touching food or beverage; any restoration obligation on fit-out; and whether the landlord will confirm non-disturbance for an operator in good standing. Skip if the building is owned.',
+     ph:'Landlord, term, and the lease\u2019s treatment of a partner-run caf\u00e9\u2026'},
+    {k:'a15_change', p:'aux', pl:'helpful', t:'Is any sale or change of control of the venue contemplated in the next two years?',
+     why:'It changes nothing about the deal; it changes how continuity is drafted.',
+     ph:'Anything contemplated, or nothing\u2026'}
+   ]},
+
+  {k:'permits', icon:'ic-flask', tag:'Section A2', title:'Permits and the kitchen',
+   note:'These put the county process on the calendar before it can put itself there. The survey also produces the works scope, which is one of the four inputs the rate is computed from.',
+   qs:[
+    {k:'a21_permit', p:'seq', pl:'sequencing', t:'Does a current retail food facility permit exist for the kitchen or caf\u00e9? In whose name, in what category, and when does it expire?',
+     why:'Determines whether the county process is a fresh application or a change, which sets the opening timeline.',
+     ph:'Permit holder, category, expiry \u2014 or none exists\u2026'},
+    {k:'a22_survey', p:'ri', pl:'rate input', t:'When can the joint contractor survey and the kitchen condition check be scheduled?',
+     why:'The jointly appointed contractor surveys the premises against Drop Shot\u2019s equipment schedule, and the existing kitchen equipment gets a working-order baseline at the same visit. A week that suits CenterLine is a complete answer.',
+     ph:'Dates that work, and who should be there\u2026'}
+   ]},
+
+  {k:'insurance', icon:'ic-scale', tag:'Section A3', title:'Insurance',
+   note:'One answer set lets Drop Shot instruct its broker once, with CenterLine\u2019s actual requirements rather than assumptions.',
+   qs:[
+    {k:'a31_requirements', p:'seq', pl:'sequencing', t:'What coverages and limits does CenterLine require of an operator, and is there a standard requirements form?',
+     why:'Venues usually have a standard; Drop Shot would rather meet yours than guess at it.',
+     ph:'Required coverages and limits, or attach the standard form\u2026'},
+    {k:'a32_certificates', p:'seq', pl:'sequencing', t:'Should Drop Shot\u2019s certificates name CenterLine as additional insured, and on what terms?',
+     why:'Completed operations, primary and non-contributory, waiver of subrogation, notice period before cancellation \u2014 stating them once avoids a second round.',
+     ph:'Additional insured terms and certificate addressee\u2026'},
+    {k:'a33_flowdown', p:'seq', pl:'sequencing', t:'Do any landlord or lender insurance requirements flow down to operators?',
+     why:'If so, an extract of the relevant clause \u2014 it lives in the same file as Section A1 and arrives in the same pass.',
+     ph:'Flow-down requirements, or none\u2026'},
+    {k:'a34_reciprocal', p:'seq', pl:'sequencing', t:'Will CenterLine confirm its premises liability cover, and liquor liability for its alcohol service, naming Drop Shot as additional insured on the same reciprocal terms?',
+     why:'The reciprocal of the certificates question, and the piece the single-counter arrangement depends on.',
+     ph:'Confirmation and any conditions\u2026'}
+   ]},
+
+  {k:'alcohol', icon:'ic-cup', tag:'Section A4', title:'Alcohol and the single counter',
+   note:'Alcohol stays entirely CenterLine\u2019s \u2014 licence, service and revenue. These two answers make the one-counter experience workable on day one.',
+   qs:[
+    {k:'a41_licence', p:'seq', pl:'sequencing', t:'What licence type does CenterLine hold, and has it been confirmed that the licence permits service through a second point of sale operated by trained partner staff under CenterLine\u2019s authority?',
+     why:'A short call to the licence file or the ABC district office settles it; the answer shapes the setup, not the intent.',
+     ph:'Licence type and what has been confirmed\u2026'},
+    {k:'a42_pouring', p:'aux', pl:'helpful', t:'How does CenterLine prefer to run pouring and handover at the shared counter?',
+     why:'Fixes staffing on both sides and the wording of the service arrangement.',
+     ph:'Preferred flow at the counter\u2026'}
+   ]},
+
+  {k:'commitments', icon:'ic-people', tag:'Section A5', title:'Existing commitments',
+   note:'Whatever exists is simply carved out by name and respected \u2014 what matters is knowing now, so every existing promise stays intact while the category closes going forward.',
+   qs:[
+    {k:'a51_suppliers', p:'seq', pl:'sequencing', t:'Do any supplier, vending or sponsorship arrangements currently touch beverage at the venue?',
+     why:'Including anything informal. These are disclosed and respected, not disturbed.',
+     ph:'Current arrangements, however informal \u2014 or none\u2026'},
+    {k:'a52_events', p:'seq', pl:'sequencing', t:'Are any future events already booked where beverage rights have been promised to a promoter or sponsor?',
+     why:'Named carve-outs keep every existing promise intact. The PB4ALL Fall Classic is already understood.',
+     ph:'Booked events with beverage commitments, by name\u2026'}
+   ]},
+
+  {k:'venue', icon:'ic-court', tag:'Section A6', title:'The venue and its calendar',
+   note:'Direct inputs to the rate proposal \u2014 the share rate, the court rate card and the member bundle programme are computed from these.',
+   qs:[
+    {k:'a61_calendar', p:'ri', pl:'rate input', t:'Roughly how many functions and third-party events does CenterLine host in a year, and at what typical size?',
+     why:'Sizes the event side of the model and the staffing plan. A rough number beats a precise silence.',
+     ph:'Functions per year, typical headcount, seasonal pattern\u2026'},
+    {k:'a62_membership', p:'ri', pl:'rate input', t:'The current membership count, monthly price and recent trend.',
+     why:'Sizes the daily trading model and the member bundle programme.',
+     ph:'Members today, price, and the direction of travel\u2026'},
+    {k:'a63_capacity', p:'seq', pl:'sequencing', t:'What court and class capacity would CenterLine make available for the member bundle programme?',
+     why:'Off-peak hours are ideal \u2014 the programme is designed around capacity that would otherwise go unsold.',
+     ph:'Hours, courts or classes that could feed the bundles\u2026'},
+    {k:'a64_presentation', p:'aux', pl:'helpful', t:'Does CenterLine intend to refresh the caf\u00e9 area\u2019s tiles and general presentation as part of the works?',
+     why:'An enquiry only. The contractor scope covers what the caf\u00e9 requires; this asks about what CenterLine may want beyond it.',
+     ph:'Intentions for the area\u2019s look, if any\u2026'}
+   ]}
+  ];
+
+  var ALL=[]; SECTIONS.forEach(function(s){s.qs.forEach(function(q){q.section=s.k; var m=/^a(\d)(\d+)_/.exec(q.k); if(m)q.code='A'+m[1]+'.'+m[2]; ALL.push(q);});});
+  var STATE={}; ALL.forEach(function(q){STATE[q.k]={content:'',status:'open',dirty:false};});
+
+  function $(id){return document.getElementById(id);}
+  function esc(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
+  function show(el,on){var e=$(el); if(!e)return; e.hidden=!on; e.style.display=on?'':'none';}
+  function plain(html){var d=document.createElement('div'); d.innerHTML=html||''; return (d.textContent||'').trim();}
+
+  /* ---------- data ---------- */
+  function api(path,opts){
+    opts=opts||{};
+    var ctl=typeof AbortController!=='undefined'?new AbortController():null;
+    var timer=setTimeout(function(){if(ctl)ctl.abort();},12000);
+    var h={'apikey':SB_KEY,'Authorization':'Bearer '+SB_KEY,'Accept':'application/json','x-dsc-key':FKEY};
+    if(opts.body)h['Content-Type']='application/json';
+    if(opts.prefer)h['Prefer']=opts.prefer;
+    return fetch(SB_URL+path,{method:opts.method||'GET',headers:h,
+      body:opts.body?JSON.stringify(opts.body):undefined,signal:ctl?ctl.signal:undefined})
+      .then(function(r){clearTimeout(timer);
+        return r.text().then(function(t){
+          if(!r.ok){var d=t; try{var j=JSON.parse(t); d=j.message||j.hint||t;}catch(e){}
+            throw new Error('HTTP '+r.status+' — '+(d||r.statusText));}
+          if(!t)return null; try{return JSON.parse(t);}catch(e){return null;}});},
+        function(e){clearTimeout(timer);
+          throw new Error(e&&e.name==='AbortError'?'timed out after 12s':(e.message||'network unreachable'));});
+  }
+
+  function load(){
+    if(!FKEY){storeOK=false; lastError='this link is missing its access key; use the full link from the email'; return Promise.resolve();}
+    return api('/cl_discovery?select=field_key,content,status').then(function(rows){
+      (rows||[]).forEach(function(r){
+        if(STATE[r.field_key]){STATE[r.field_key].content=r.content||''; STATE[r.field_key].status=r.status||'open';}
+      });
+      storeOK=true; lastError='';
+    },function(e){storeOK=false; lastError=e.message||'unknown error';});
+  }
+
+  function saveField(k){
+    if(!storeOK){setMeta(k,'offline — not saved','err'); return Promise.resolve();}
+    setMeta(k,'saving…','');
+    return api('/cl_discovery',{method:'POST',prefer:'resolution=merge-duplicates,return=minimal',
+      body:[{field_key:k,content:STATE[k].content,status:STATE[k].status,updated_at:new Date().toISOString()}]})
+      .then(function(){STATE[k].dirty=false; setMeta(k,'saved','saved'); refreshStatus();},
+            function(e){setMeta(k,'save failed — '+(e.message||''),'err');});
+  }
+
+  function saveAll(){
+    var dirty=ALL.filter(function(q){return STATE[q.k].dirty;});
+    if(!dirty.length){setStatus('Nothing to save','saved'); return;}
+    setStatus('Saving '+dirty.length+'…','');
+    Promise.all(dirty.map(function(q){return saveField(q.k);})).then(function(){
+      setStatus('All saved '+new Date().toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit'}),'saved');
+    });
+  }
+
+  function setStatus(m,c){var e=$('status'); e.textContent=m; e.className='status-line'+(c?' '+c:'');}
+  function setMeta(k,m,c){var e=document.querySelector('[data-meta="'+k+'"]'); if(e){e.textContent=m; e.className='rt-meta'+(c?' '+c:'');}}
+  function refreshStatus(){
+    var anyDirty=ALL.some(function(q){return STATE[q.k].dirty;});
+    if(anyDirty)setStatus('Unsaved changes','dirty');
+  }
+
+  var timers={};
+  function touch(k){
+    STATE[k].dirty=true; setMeta(k,'unsaved','dirty'); setStatus('Unsaved changes','dirty');
+    clearTimeout(timers[k]); timers[k]=setTimeout(function(){saveField(k);},1100);
+    renderScore();
+  }
+
+  /* ---------- render ---------- */
+  function renderScore(){
+    var answered=0,blockers=0,blockersLeft=0,ask=0;
+    ALL.forEach(function(q){
+      var s=STATE[q.k], done=s.status==='answered'||s.status==='na'||(s.status==='open'&&plain(s.content).length>0);
+      if(q.p==='ri'){blockers++; if(!done&&s.status!=='followup')blockersLeft++;}
+      if(done)answered++;
+      if(s.status==='followup')ask++;
+    });
+    var pctv=Math.round(answered/ALL.length*100);
+    var cells=[
+      ['Answered',answered+' / '+ALL.length,'across six sections',''],
+      ['Rate inputs left',String(blockersLeft),'of '+blockers+' the numbers are computed from',blockersLeft===0?'good':'bad'],
+      ['To follow up',String(ask),'we will pick these up together','gold'],
+      ['Complete',pctv+'%','of the schedule','gold']
+    ];
+    $('sb').innerHTML=cells.map(function(c){
+      return '<div class="sb-cell"><div class="sb-lab">'+esc(c[0])+'</div>'+
+        '<div class="sb-val '+c[3]+'">'+esc(c[1])+'</div><div class="sb-note">'+esc(c[2])+'</div></div>';}).join('');
+    $('progBar').style.width=pctv+'%';
+    SECTIONS.forEach(function(s){
+      var el=document.querySelector('[data-cnt="'+s.k+'"]'); if(!el)return;
+      var a=s.qs.filter(function(q){var t=STATE[q.k];
+        return t.status==='answered'||t.status==='na'||(t.status==='open'&&plain(t.content).length>0);}).length;
+      el.textContent=a+' / '+s.qs.length;
+    });
+  }
+
+  /* ---------- per-field advanced toolbar ---------- */
+  function ic(n){return '<svg aria-hidden="true"><use href="#'+n+'"/></svg>';}
+  function tb(cmd,label,title,pressable){
+    return '<button type="button" data-cmd="'+cmd+'" title="'+esc(title)+'"'+
+      (pressable?' aria-pressed="false"':'')+'>'+label+'</button>';
+  }
+  function barHtml(k){
+    return '<div class="rt-bar" data-bar="'+k+'" role="toolbar" aria-label="Formatting">'+
+      tb('bold','B','Bold  (Ctrl+B)',1)+
+      tb('italic','<i>I</i>','Italic  (Ctrl+I)',1)+
+      tb('underline','<u>U</u>','Underline  (Ctrl+U)',1)+
+      tb('strikeThrough','<s>S</s>','Strikethrough',1)+
+      '<span class="gap"></span>'+
+      '<select data-block="'+k+'" title="Paragraph style" aria-label="Paragraph style">'+
+        '<option value="p">Paragraph</option>'+
+        '<option value="h2">Heading</option>'+
+        '<option value="h3">Subheading</option>'+
+        '<option value="h4">Minor heading</option>'+
+        '<option value="blockquote">Quote</option>'+
+        '<option value="pre">Code</option>'+
+      '</select>'+
+      '<span class="gap"></span>'+
+      tb('insertUnorderedList',ic('t-ul'),'Bulleted list',1)+
+      tb('insertOrderedList',ic('t-ol'),'Numbered list',1)+
+      tb('outdent',ic('t-outdent'),'Outdent  (Shift+Tab)')+
+      tb('indent',ic('t-indent'),'Indent  (Tab)')+
+      '<span class="gap"></span>'+
+      tb('justifyLeft',ic('t-alL'),'Align left',1)+
+      tb('justifyCenter',ic('t-alC'),'Align centre',1)+
+      tb('justifyRight',ic('t-alR'),'Align right',1)+
+      tb('justifyFull',ic('t-alJ'),'Justify',1)+
+      '<span class="gap"></span>'+
+      tb('superscript','x&sup2;','Superscript',1)+
+      tb('subscript','x&#8322;','Subscript',1)+
+      '<span class="gap"></span>'+
+      '<span class="swatch" title="Text colour"><b>A</b>'+
+        '<input type="color" data-fore="'+k+'" value="#15322B" aria-label="Text colour">'+
+        '<span style="background:#15322B" data-forebar="'+k+'"></span></span>'+
+      '<span class="swatch" title="Highlight"><b>H</b>'+
+        '<input type="color" data-hi="'+k+'" value="#E3B05A" aria-label="Highlight colour">'+
+        '<span style="background:#E3B05A" data-hibar="'+k+'"></span></span>'+
+      '<span class="gap"></span>'+
+      '<button type="button" data-link="'+k+'" title="Insert link  (Ctrl+K)">'+ic('t-link')+'</button>'+
+      tb('unlink',ic('t-unlink'),'Remove link')+
+      tb('insertHorizontalRule',ic('t-hr'),'Divider')+
+      '<span class="gap"></span>'+
+      '<button type="button" data-plain="'+k+'" title="Paste as plain text">'+ic('t-paste')+'</button>'+
+      tb('removeFormat',ic('t-clear'),'Clear formatting')+
+      tb('undo',ic('t-undo'),'Undo  (Ctrl+Z)')+
+      tb('redo',ic('t-redo'),'Redo  (Ctrl+Shift+Z)')+
+    '</div>';
+  }
+
+  var STATE_CMDS=['bold','italic','underline','strikeThrough','insertUnorderedList',
+    'insertOrderedList','justifyLeft','justifyCenter','justifyRight','justifyFull',
+    'superscript','subscript'];
+
+  function syncBar(k){
+    var bar=document.querySelector('[data-bar="'+k+'"]'); if(!bar)return;
+    STATE_CMDS.forEach(function(c){
+      var b=bar.querySelector('[data-cmd="'+c+'"]'); if(!b)return;
+      var on=false; try{on=document.queryCommandState&&document.queryCommandState(c);}catch(e){}
+      b.setAttribute('aria-pressed',String(!!on));
+    });
+    var sel=bar.querySelector('[data-block]');
+    if(sel){var f='p'; try{f=(document.queryCommandValue&&document.queryCommandValue('formatBlock')||'p').toLowerCase();}catch(e){}
+      if(f==='div'||f==='')f='p';
+      sel.value=['p','h2','h3','h4','blockquote','pre'].indexOf(f)>=0?f:'p';}
+  }
+
+  function renderSections(){
+    $('sections').innerHTML=SECTIONS.map(function(s){
+      return '<div class="wrap"><div class="sow">'+
+        '<div class="sow-head"><svg class="ill"><use href="#'+s.icon+'"/></svg><div>'+
+          '<span class="tag">'+esc(s.tag)+'</span><h3>'+esc(s.title)+'</h3><p>'+esc(s.note)+'</p>'+
+        '</div><span class="cnt" data-cnt="'+s.k+'">0 / '+s.qs.length+'</span></div>'+
+        '<div class="sow-body">'+s.qs.map(function(q,i){
+          var st=STATE[q.k];
+          return '<div class="q" data-q="'+q.k+'">'+
+            '<div class="q-head">'+
+              '<span class="q-n">'+esc(q.code||('Q'+(ALL.indexOf(q)+1)))+'</span>'+
+              '<div class="q-main"><div class="q-t">'+esc(q.t)+'</div>'+
+              '<p class="q-why">'+q.why+'</p></div>'+
+              '<span class="badge '+q.p+'">'+esc(q.pl||q.p)+'</span>'+
+            '</div>'+
+            '<div class="pills">'+
+              '<button class="pill" data-st="answered" data-k="'+q.k+'" aria-pressed="'+(st.status==='answered')+'" type="button">Answered</button>'+
+              '<button class="pill ask" data-st="followup" data-k="'+q.k+'" aria-pressed="'+(st.status==='followup')+'" type="button">We&#8217;ll follow up</button>'+
+              '<button class="pill na" data-st="na" data-k="'+q.k+'" aria-pressed="'+(st.status==='na')+'" type="button">Not applicable</button>'+
+            '</div>'+
+            '<div class="rt-wrap" data-wrap="'+q.k+'">'+
+              barHtml(q.k)+
+              '<div class="rt-body" contenteditable="true" role="textbox" aria-multiline="true" '+
+                'aria-label="'+esc(q.t)+'" data-k="'+q.k+'" data-ph="'+esc(q.ph)+'"></div>'+
+              '<div class="rt-foot"><span class="rt-meta" data-meta="'+q.k+'">&nbsp;</span>'+
+                '<span class="rt-count" data-count="'+q.k+'">0 words</span>'+
+                '<button class="btn btn-quiet" data-save="'+q.k+'" type="button">Save</button></div>'+
+            '</div>'+
+          '</div>';
+        }).join('')+'</div></div></div>';
+    }).join('');
+    ALL.forEach(function(q){
+      var b=document.querySelector('.rt-body[data-k="'+q.k+'"]');
+      if(b)b.innerHTML=STATE[q.k].content||'';
+      setCount(q.k);
+    });
+  }
+
+  /* ---------- toolbar wiring ---------- */
+  function cmd(name,val){
+    try{ if(document.execCommand) document.execCommand(name,false,val||null); }
+    catch(e){ /* engine does not support it; content below is still captured */ }
+  }
+  function bodyFor(k){return document.querySelector('.rt-body[data-k="'+k+'"]');}
+  function apply(k,name,val){
+    var b=bodyFor(k); if(!b)return;
+    b.focus();
+    cmd(name,val);
+    STATE[k].content=b.innerHTML;
+    touch(k); syncBar(k);
+  }
+
+  // mousedown-preventDefault keeps the caret and selection alive when a control is clicked
+  document.addEventListener('mousedown',function(e){
+    if(e.target.closest&&e.target.closest('.rt-bar')&&!e.target.closest('input,select'))e.preventDefault();
+  });
+
+  document.addEventListener('click',function(e){
+    var bar=e.target.closest&&e.target.closest('.rt-bar'); if(!bar)return;
+    var k=bar.getAttribute('data-bar');
+    var btn=e.target.closest('button'); if(!btn)return;
+    if(btn.hasAttribute('data-cmd')){apply(k,btn.getAttribute('data-cmd'));return;}
+    if(btn.hasAttribute('data-link')){
+      var u=window.prompt('Link to:','https://'); if(u)apply(k,'createLink',u); return;}
+    if(btn.hasAttribute('data-plain')){
+      var t=window.prompt('Paste the text here — it will be inserted with all formatting stripped:','');
+      if(t!==null&&t!=='')apply(k,'insertText',t); return;}
+  });
+
+  document.addEventListener('change',function(e){
+    var sel=e.target.closest&&e.target.closest('[data-block]');
+    if(sel){apply(sel.getAttribute('data-block'),'formatBlock','<'+sel.value+'>');}
+  });
+
+  document.addEventListener('input',function(e){
+    var f=e.target.closest&&e.target.closest('[data-fore]');
+    if(f){var k=f.getAttribute('data-fore');
+      var sw=document.querySelector('[data-forebar="'+k+'"]'); if(sw)sw.style.background=f.value;
+      apply(k,'foreColor',f.value); return;}
+    var h=e.target.closest&&e.target.closest('[data-hi]');
+    if(h){var k2=h.getAttribute('data-hi');
+      var sw2=document.querySelector('[data-hibar="'+k2+'"]'); if(sw2)sw2.style.background=h.value;
+      apply(k2,'hiliteColor',h.value); return;}
+  });
+
+  /* ---------- editor events ---------- */
+  function words(html){var t=plain(html); return t?t.split(/\s+/).length:0;}
+  function setCount(k){
+    var e=document.querySelector('[data-count="'+k+'"]');
+    if(e){var n=words(STATE[k].content); e.textContent=n+(n===1?' word':' words');}
+  }
+
+  document.addEventListener('focusin',function(e){
+    var b=e.target.closest&&e.target.closest('.rt-body'); if(!b)return;
+    var w=b.closest('.rt-wrap'); if(w)w.classList.add('focused');
+    syncBar(b.getAttribute('data-k'));
+  });
+  document.addEventListener('focusout',function(e){
+    var b=e.target.closest&&e.target.closest('.rt-body'); if(!b)return;
+    // keep the ring while the click is landing on this field's own toolbar
+    setTimeout(function(){
+      var w=b.closest('.rt-wrap'); if(!w)return;
+      if(!w.contains(document.activeElement))w.classList.remove('focused');
+    },0);
+  });
+
+  document.addEventListener('input',function(e){
+    var b=e.target.closest&&e.target.closest('.rt-body'); if(!b)return;
+    var k=b.getAttribute('data-k');
+    STATE[k].content=b.innerHTML;
+    if(STATE[k].status==='open'&&plain(b.innerHTML))STATE[k].status='answered';
+    syncPills(k); setCount(k); touch(k);
+  });
+
+  ['keyup','mouseup'].forEach(function(evt){
+    document.addEventListener(evt,function(e){
+      var b=e.target.closest&&e.target.closest('.rt-body');
+      if(b)syncBar(b.getAttribute('data-k'));
+    });
+  });
+
+  // paste arrives as plain text by default — pasted Word/web markup is the main way
+  // a rich-text field turns into unreadable soup
+  document.addEventListener('paste',function(e){
+    var b=e.target.closest&&e.target.closest('.rt-body'); if(!b)return;
+    if(!e.clipboardData)return;
+    e.preventDefault();
+    var t=e.clipboardData.getData('text/plain')||'';
+    cmd('insertText',t);
+    var k=b.getAttribute('data-k');
+    STATE[k].content=b.innerHTML; setCount(k); touch(k);
+  });
+
+  document.addEventListener('keydown',function(e){
+    var b=e.target.closest&&e.target.closest('.rt-body'); if(!b)return;
+    var k=b.getAttribute('data-k');
+    // Tab indents rather than moving focus. Escape is the way out.
+    if(e.key==='Tab'){
+      e.preventDefault();
+      cmd(e.shiftKey?'outdent':'indent');
+      STATE[k].content=b.innerHTML; touch(k); syncBar(k); return;
+    }
+    if(e.key==='Escape'){e.preventDefault(); b.blur(); return;}
+    if((e.metaKey||e.ctrlKey)&&e.key.toLowerCase()==='k'){
+      e.preventDefault(); var u=window.prompt('Link to:','https://'); if(u)apply(k,'createLink',u); return;}
+    if((e.metaKey||e.ctrlKey)&&e.key.toLowerCase()==='s'){e.preventDefault(); saveField(k);}
+  });
+
+  function syncPills(k){
+    document.querySelectorAll('.pill[data-k="'+k+'"]').forEach(function(p){
+      p.setAttribute('aria-pressed',String(p.getAttribute('data-st')===STATE[k].status));
+    });
+  }
+
+  document.addEventListener('click',function(e){
+    var p=e.target.closest&&e.target.closest('.pill');
+    if(p){
+      var k=p.getAttribute('data-k'), st=p.getAttribute('data-st');
+      STATE[k].status=(STATE[k].status===st)?'open':st;
+      syncPills(k); touch(k); return;
+    }
+    var s=e.target.closest&&e.target.closest('[data-save]');
+    if(s){saveField(s.getAttribute('data-save'));}
+  });
+
+  $('btnSave').addEventListener('click',saveAll);
+  $('btnRetry').addEventListener('click',connect);
+  window.addEventListener('beforeunload',function(e){
+    if(ALL.some(function(q){return STATE[q.k].dirty;})){e.preventDefault(); e.returnValue='';}
+  });
+
+  /* ---------- boot ---------- */
+  function setConn(ok){
+    $('connDot').className='pulse'+(ok?'':' off');
+    $('whoami').textContent=ok?'live':'offline';
+    if(ok){$('storeBanner').classList.remove('show'); setStatus('Ready','');}
+    else{
+      $('storeBanner').textContent='Not saving — could not reach Supabase ('+(lastError||'unknown')+
+        '). You can still type, but nothing is being stored. Use Retry once you are back online, then Save all.';
+      $('storeBanner').classList.add('show');
+      setStatus('Offline','err');
+    }
+  }
+  function connect(){
+    setStatus('Connecting…','');
+    return load().then(function(){
+      ALL.forEach(function(q){
+        var b=document.querySelector('.rt-body[data-k="'+q.k+'"]');
+        if(b&&!STATE[q.k].dirty)b.innerHTML=STATE[q.k].content||'';
+        syncPills(q.k); setCount(q.k);
+      });
+      renderScore(); setConn(storeOK);
+    });
+  }
+  (function boot(){
+    show('boot',false); show('app',true);
+    renderSections();
+    $('blkCount').textContent = ALL.filter(function(q){return q.p==='ri';}).length;
+    renderScore();
+    $('stamp').textContent=new Date().toLocaleDateString('en-US',{year:'numeric',month:'short',day:'2-digit'}).toUpperCase();
+    connect();
+  })();
+
+})();
+</script>
+</body>
+</html>
